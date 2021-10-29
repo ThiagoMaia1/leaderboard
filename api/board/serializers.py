@@ -10,14 +10,15 @@ class UserSerializer(serializers.ModelSerializer):
 
 class ScoreSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True, many=False)
-    username = serializers.PrimaryKeyRelatedField(
-        queryset=User.objects.all(), write_only=True)
+    username = serializers.CharField(write_only=True)
 
     class Meta:
         model = Score
         fields = ('id', 'value', 'user', 'username')
 
     def create(self, validated_data):
-        user = validated_data.pop('username')
+        username = validated_data.pop('username')
+        print(username)
+        user, wasCreated = User.objects.get_or_create(name=username)
         score = Score.objects.create(user=user, ** validated_data)
         return score

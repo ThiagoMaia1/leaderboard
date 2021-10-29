@@ -24,11 +24,9 @@ function NewScoreRow() {
       setIsSubmitting(true);
       const username = typeSafeTarget.username.value;
       const score = typeSafeTarget.score.value;
-      createUser(username).finally(() =>
-        createScore(score, username)
-          .then(() => queryClient.refetchQueries(Endpoints.SCORES))
-          .finally(() => setIsSubmitting(false))
-      );
+      createScore(score, username)
+        .then(() => queryClient.refetchQueries(Endpoints.SCORES))
+        .finally(() => setIsSubmitting(false));
       return false;
     },
     [queryClient]
