@@ -11,15 +11,6 @@ class ScoreView(viewsets.ModelViewSet):
     serializer_class = ScoreSerializer
     queryset = Score.objects.all()
 
-    def post(self, request):
-        print("#############")
-        print(request.data)
-        serializedScore = ScoreSerializer(request.data)
-        if serializedScore.is_valid(raise_exception=True):
-            serializedScore.save()
-            return Response(serializedScore.data, status=status.HTTP_200_OK)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
-
 
 class UserView(viewsets.ModelViewSet):
     serializer_class = UserSerializer

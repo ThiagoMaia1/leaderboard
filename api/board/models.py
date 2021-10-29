@@ -4,7 +4,7 @@ from django.db import models
 
 
 class User(models.Model):
-    name = models.CharField(max_length=120)
+    name = models.CharField(max_length=60, primary_key=True)
 
 
 class Score (models.Model):
