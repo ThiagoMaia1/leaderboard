@@ -2,10 +2,12 @@ import React, { useMemo, useState } from "react";
 import { useQuery } from "react-query";
 import { getScores, FlatScore } from "service/score";
 import ScoreRow from "./components/ScoreRow";
-import { HeaderCell, IconWrapper, Wrapper } from "./styles";
+import { Header, HeaderCell, IconWrapper, ListContainer } from "./styles";
 import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 import { Endpoints } from "service/fetcher";
 import NewScoreRow from "./components/NewScoreRow";
+import AppearFromBelow from "components/AppearFromBelow";
+import Loading from "components/Loading";
 
 type HeaderConfig = {
   displayName: string;
@@ -19,7 +21,9 @@ const headers: HeaderConfig[] = [
 ];
 
 function Scoreboard() {
-  const { data: scores } = useQuery(Endpoints.SCORES, getScores);
+  const { data: scores } = useQuery(Endpoints.SCORES, getScores, {
+    suspense: true,
+  });
   const [sortKey, setSortKey] = useState<keyof FlatScore>("score");
   const [shouldSortDescending, setShouldSortDescending] = useState(true);
 
@@ -32,8 +36,7 @@ function Scoreboard() {
 
   return (
     <>
-      <NewScoreRow />
-      <Wrapper>
+      <Header>
         {headers.map(({ displayName, key, defaultDescending }) => (
           <HeaderCell
             key={key}
@@ -58,10 +61,18 @@ function Scoreboard() {
             </div>
           </HeaderCell>
         ))}
-        {sortedScores.map(({ id, score, username }) => (
-          <ScoreRow key={id} username={username} score={score} />
-        ))}
-      </Wrapper>
+      </Header>
+      <br />
+      <ListContainer>
+        {!sortedScores.length
+          ? <h2>No Scores Available</h2>
+          : sortedScores.map(({ id, score, username }, i) => (
+              <ScoreRow key={id} username={username} score={score} index={i} />
+            ))}
+      </ListContainer>
+      <AppearFromBelow timeInMs={800}>
+        <NewScoreRow />
+      </AppearFromBelow>
     </>
   );
 }

@@ -28,6 +28,31 @@ const GlobalStyles = createGlobalStyle`
     cursor: pointer;
   }
 
+  h1, h2, h3 {
+    color: white;
+  }
+
+  *::-webkit-scrollbar {
+    width: 0.5vw;
+    left: -0.5vw;
+    height: 95%;
+  }
+  
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  *::-webkit-scrollbar-thumb {
+    background-color: #ffcc52;
+    border-radius: 100px;
+  }
+
+  *::-webkit-scrollbar-button {
+    width: 0;
+    height: 0;
+    display: none;
+  }
+
   ${({ theme }) => css`
     body {
       font-family: ${theme.font.family};

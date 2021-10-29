@@ -1,10 +1,10 @@
+import Loading from "components/Loading";
 import React, { FormEventHandler, useCallback, useState } from "react";
 import { useQueryClient } from "react-query";
 import { Endpoints } from "service/fetcher";
 import { createScore } from "service/score";
-import { createUser } from "service/user";
 import { Cell } from "../ScoreRow/styles";
-import { Form } from "./styles";
+import { Button, ButtonContainer, Form, H3, LoadingContainer, Wrapper, Grid } from "./styles";
 
 function NewScoreRow() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -19,13 +19,16 @@ function NewScoreRow() {
       }
       const typeSafeTarget = target as typeof target & {
         username: { value: string };
-        score: { value: number };
+        score: { value: string };
       };
       setIsSubmitting(true);
-      const username = typeSafeTarget.username.value;
-      const score = typeSafeTarget.score.value;
-      createScore(score, username)
-        .then(() => queryClient.refetchQueries(Endpoints.SCORES))
+      const {username, score} = typeSafeTarget;
+      createScore(Number(score.value), username.value)
+        .then(() => {
+          queryClient.refetchQueries(Endpoints.SCORES)
+          username.value = ''; 
+          score.value = ''; 
+        })
         .finally(() => setIsSubmitting(false));
       return false;
     },
@@ -33,15 +36,26 @@ function NewScoreRow() {
   );
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <Cell>
-        <input name="username" type="text" maxLength={60} />
-      </Cell>
-      <Cell>
-        <input name="score" type="number" />
-      </Cell>
-      <button>Send</button>
-    </Form>
+    <Wrapper>
+      <H3>New Score</H3>
+      <br />
+      <Form onSubmit={handleSubmit}>
+        <Grid>
+          <Cell>
+            <input name="username" type="text" maxLength={60} />
+          </Cell>
+          <Cell>
+            <input name="score" type="number" />
+          </Cell>
+        </Grid>
+        <ButtonContainer>
+          <Button>Send</Button>
+          {isSubmitting && <LoadingContainer>
+            <Loading />
+          </LoadingContainer>}
+        </ButtonContainer>
+      </Form>
+    </Wrapper>
   );
 }
 
