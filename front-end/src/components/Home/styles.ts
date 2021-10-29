@@ -1,18 +1,13 @@
-import styled, { css } from 'styled-components'
+import styled, { css } from 'styled-components';
 
 export const Wrapper = styled.div`
   ${({ theme }) => css`
     display: flex;
+    align-items: center;
     flex-direction: column;
     gap: ${theme.grid.gutter};
     padding: ${theme.spacings.large};
-
-    @media screen and (min-width: 768px) {
-      align-items: center;
-      flex-direction: row;
-    }
-
-    > svg {
+    x > svg {
       height: auto;
       width: 70px;
     }
@@ -29,4 +24,4 @@ export const Wrapper = styled.div`
       }
     }
   `}
-`
+`;

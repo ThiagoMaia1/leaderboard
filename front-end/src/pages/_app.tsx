@@ -1,10 +1,14 @@
-import { AppProps } from 'next/app'
-import Head from 'next/head'
+import { AppProps } from 'next/app';
+import Head from 'next/head';
+import React from 'react';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
-import { ThemeProvider } from 'styled-components'
+import { ThemeProvider } from 'styled-components';
 
-import GlobalStyles from 'styles/global'
-import theme from 'styles/theme'
+import GlobalStyles from 'styles/global';
+import theme from 'styles/theme';
+
+const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -19,7 +23,9 @@ export default function App({ Component, pageProps }: AppProps) {
         />
       </Head>
       <GlobalStyles />
-      <Component {...pageProps} />
+      <QueryClientProvider client={queryClient}>
+        <Component {...pageProps} />
+      </QueryClientProvider>
     </ThemeProvider>
-  )
+  );
 }

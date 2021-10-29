@@ -1,11 +1,11 @@
-import { render } from 'utils/testUtils'
+import { render } from 'utils/testUtils';
 
-import Home from '.'
+import Home from '.';
 
 describe('<Home />', () => {
   it('should render the home', () => {
-    const { container } = render(<Home />)
+    const { container } = render(<Home />);
 
-    expect(container).toBeInTheDocument()
-  })
-})
+    expect(container).toBeInTheDocument();
+  });
+});
